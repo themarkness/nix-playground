@@ -1,12 +1,10 @@
-import React from 'react'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-function App() {
-  return (
-    <div>
-      <h1>Hello from Nix!</h1>
-      <p>This app was built and deployed using Nix</p>
-    </div>
-  )
-}
-
-export default App
+export default defineConfig({
+  plugins: [react()],
+  esbuild: {
+    loader: 'jsx',
+    include: /src\/.*\.jsx?$/,
+  }
+})

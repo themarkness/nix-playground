@@ -1,0 +1,66 @@
+{ config, pkgs, ... }:
+
+{
+  imports =
+    [
+    ./hardware-configuration.nix
+    ];
+ 
+  nix.settings.experimental-features =["nix-command" "flakes"];
+  
+  time.timeZone = "europe/london";
+ 
+  boot = {
+   kernelPackages = pkgs.linuxPackages_6_1;
+   supportedFilesystems = [ "btrfs"];
+
+  loader.grub = {
+  enable = true;
+  version = 2;
+  forceInstall = true;
+  device = "/dev/sda";
+  };
+ };
+ 
+ networking = {
+  hostName = "nixos-vm";
+  useDHCP = false;
+
+  interfaces = {
+   eth0.useDHCP = true;
+ };
+
+ firewall = {
+  enable = true;
+  allowedTCPPorts =[];
+  allowedUDPPorts =[];
+  };
+ };
+
+ nix = {
+    gc = {
+      automatic = true;
+      dates = "monthly";
+      options = "--delete-older-than 30d";
+      };
+    };
+
+  environment.systemPackages = with pkgs; [
+    git
+    vim
+  ];
+
+  services.openssh = {
+    enable = true;
+    permitRootLogin = "yes";
+    passwordAuthentication = false;
+  };
+
+  services.fail2ban.enable = true;
+
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 <ssh key>"
+  ];
+
+  system.stateVersion = "23.11";
+}

@@ -1,10 +1,14 @@
 # Currently configuring a nixOS server to install Bonfire and Postgres DB, these files contain current status.
 
-## 07.07/25 - 
+## 07.07/25
 
-From /etc/nixos run `nixos-rebuild switch --flake .#nixos-vm`
+- Moved `configuration.nix` to `configuration.nix.old`
+- Installed SSH Remote in Cursor to connect to remote VM
+- Installed Node temporarily on server using `nix-env` as this was a dependancy for using cursor
+- Generated flake.nix using a combo of Cursor and https://github.com/bonfire-networks/bonfire-nix/blob/main/flake.nix
+-  From /etc/nixos run `nixos-rebuild switch --flake .#nixos-vm`
 
-see error
+encounter error
 
 ```
 error: undefined variable 'ex_aws'
@@ -29,7 +33,6 @@ The error is not caused by your configuration.nix or flake.nix, but by the upstr
 What you can do:
 
 Workaround:
-If you do not need bonfire, comment it out from your configuration and rebuild. This will let you continue using NixOS without this error.
-If you do need bonfire, you will need to patch the Nix expression or wait for an upstream fix.
+patch the Nix expression or wait for an upstream fix.
 Report the bug:
 Report this issue to the maintainers of the bonfire package or to the NixOS/nixpkgs repository. Include the error message and stack trace you provided here.
